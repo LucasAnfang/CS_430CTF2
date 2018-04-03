@@ -96,12 +96,7 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
   var candidateHash = crypto.createHash('md5').update(process.env.PASSWORD_SALT + candidatePassword).digest("hex");
-  if(candidateHash === this.password) {
-    cb(null, true);
-  }
-  else {
-    cb(null, false);
-  }
+  cb(null, (candidateHash === this.password));
   // bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
   //   if (err) return cb(err);
   //   cb(null, isMatch);
