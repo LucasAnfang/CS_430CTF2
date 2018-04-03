@@ -1,0 +1,5 @@
+{
+    "env": {
+        "SESSION_SECRET_KEY": "5edf5869-f227-4997-8a07-7d1b655a10de"
+    }
+}
