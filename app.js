@@ -28,6 +28,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const passwordValidator = require('./password-validator');
+
 app.use(session({ 
   secret: process.env.SESSION_SECRET_KEY,
   resave: true,
@@ -149,11 +151,20 @@ app.post('/signup', function(req, res) {
       password: req.body.password
     });
 
-  user.save(function(err) {
-    req.logIn(user, function(err) {
-      res.redirect('/');
+  // TODO: Check password criteria
+  var result = passwordValidator(user.password);
+  console.log(result);
+  if(!result.valid) {
+    req.flash('error', result.message);
+    return res.redirect('/signup');
+  }
+  else {
+    user.save(function(err) {
+      req.logIn(user, function(err) {
+        res.redirect('/');
+      });
     });
-  });
+  }
 });
 
 app.post('/forgot', function(req, res, next) {
@@ -227,16 +238,26 @@ app.post('/reset/:token', function(req, res) {
           req.flash('error', 'Password reset token is invalid or has expired.');
           return res.redirect('back');
         }
-
+        
         user.password = req.body.password;
         user.resetPasswordToken = undefined;
         user.resetPasswordExpires = undefined;
 
-        user.save(function(err) {
-          req.logIn(user, function(err) {
-            done(err, user);
+        // TODO: Check password criteria
+        var result = passwordValidator(req.body.password);
+        console.log(result);
+        if(!result.valid) {
+          req.flash('error', result.message);
+          var route = '/reset/' + req.params.token;
+          return res.redirect(route);
+        }
+        else {
+          user.save(function(err) {
+            req.logIn(user, function(err) {
+              done(err, user);
+            });
           });
-        });
+        }
       });
     },
     function(user, done) {
