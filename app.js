@@ -108,7 +108,7 @@ var User = mongoose.model('User', userSchema);
 // Routes
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'Express',
+    title: 'HackMe',
     user: req.user
   });
 });
