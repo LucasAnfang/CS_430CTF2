@@ -1,5 +1,6 @@
 {
     "env": {
-        "SESSION_SECRET_KEY": "5edf5869-f227-4997-8a07-7d1b655a10de"
+        "SESSION_SECRET_KEY": "5edf5869-f227-4997-8a07-7d1b655a10de",
+        "PASSWORD_SALT": "ca382d7f-8976-4289-bc13-34fa64100184"
     }
 }
