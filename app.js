@@ -18,7 +18,7 @@ var app = express();
 mongoose.connect('mongodb://ctf2_t6_dev:QeBP7mFLvqL407tE@cluster0-shard-00-00-gptnr.mongodb.net:27017,cluster0-shard-00-01-gptnr.mongodb.net:27017,cluster0-shard-00-02-gptnr.mongodb.net:27017/test?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin');
 
 // Middleware
-app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(favicon());
@@ -225,7 +225,7 @@ app.post('/forgot', function(req, res, next) {
         subject: 'Team6 Password Reset',
         text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          'http://' + 13.57.208.67 + '/reset/' + token + '\n\n' +
+          'http://' + '13.57.208.67' + '/reset/' + token + '\n\n' +
           'If you did not request this, please ignore this email and your password will remain unchanged.\n'
       };
       transporter.sendMail(mailOptions, function(err) {
