@@ -169,9 +169,21 @@ app.post('/signup', function(req, res) {
   }
   else {
     user.save(function(err) {
-      req.logIn(user, function(err) {
-        res.redirect('/');
-      });
+      if (err) {
+        console.log(err);
+        req.flash('error', err.message);
+        return res.redirect('/signup');
+      }
+      else {
+        req.logIn(user, function(err) {
+          if (err) {
+            console.log(err);
+            req.flash('error', err.message);
+            return res.redirect('/signup');
+          }
+          else res.redirect('/');
+        });
+      }
     });
   }
 });
