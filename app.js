@@ -80,15 +80,6 @@ userSchema.pre('save', function(next) {
 
   if (!user.isModified('password')) return next();
 
-  // bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
-  //   if (err) return next(err);
-
-  //   bcrypt.hash(user.password, salt, null, function(err, hash) {
-  //     if (err) return next(err);
-  //     user.password = hash;
-  //     next();
-  //   });
-  // });
   var hash = crypto.createHash('md5').update(process.env.PASSWORD_SALT + user.password).digest("hex");
   user.password = hash;
   next();
@@ -97,10 +88,6 @@ userSchema.pre('save', function(next) {
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
   var candidateHash = crypto.createHash('md5').update(process.env.PASSWORD_SALT + candidatePassword).digest("hex");
   cb(null, (candidateHash === this.password));
-  // bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-  //   if (err) return cb(err);
-  //   cb(null, isMatch);
-  // });
 };
 
 var User = mongoose.model('User', userSchema);
