@@ -158,7 +158,7 @@ app.post('/signup', function(req, res) {
   else {
     user.save(function(err) {
       req.logIn(user, function(err) {
-        res.redirect('/');
+        res.redirect('/success');
       });
     });
   }
