@@ -111,6 +111,12 @@ app.get('/signup', function(req, res) {
   });
 });
 
+app.get('/success', function(req, res) {
+  res.render('success', {
+    user: req.user
+  });
+});
+
 app.get('/logout', function(req, res){
   req.logout();
   res.redirect('/');
