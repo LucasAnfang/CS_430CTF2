@@ -120,8 +120,6 @@ app.get('/success', function(req, res) {
 
 app.get('/failure', function(req, res) {
   res.render('failure', {
-    title: 'Login failed',
-    user: req.user
   });
 });
 
