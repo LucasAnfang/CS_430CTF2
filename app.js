@@ -144,7 +144,7 @@ app.post('/login', function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      return res.redirect('/');
+      return res.redirect('/failure');
     });
   })(req, res, next);
 });
