@@ -41,10 +41,14 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy(function(username, password, done) {
-  User.findOne({ username: username }, function(err, user) {
+
+passport.use(new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password'
+  }, function(username, password, done) {
+  User.findOne({ email: username }, function(err, user) {
     if (err) return done(err);
-    if (!user) return done(null, false, { message: 'Incorrect username.' });
+    if (!user) return done(null, false, { message: 'Incorrect email.' });
     user.comparePassword(password, function(err, isMatch) {
       if (isMatch) {
         return done(null, user);
@@ -67,7 +71,7 @@ passport.deserializeUser(function(id, done) {
 
 // User schema
 var userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  //username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   resetPasswordToken: String,
@@ -163,7 +167,7 @@ app.post('/login', function(req, res, next) {
 
 app.post('/signup', function(req, res) {
   var user = new User({
-      username: req.body.username,
+      // username: req.body.username,
       email: req.body.email,
       password: req.body.password
     });
