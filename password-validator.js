@@ -1,9 +1,9 @@
 /*
 TODO add these:
-    (?=.*[A-Z].*[A-Z])        Ensure string has two uppercase letters.
-    (?=.*[!@#$&*])            Ensure string has one special case letter.
-    (?=.*[0-9].*[0-9])        Ensure string has two digits.
-    (?=.*[a-z].*[a-z].*[a-z]) Ensure string has three lowercase letters.
+    (?=.*[A-Z].*[A-Z])        Ensure string has one uppercase letter.
+    (?=.*[!@#$&*])            Ensure string has one special character.
+    (?=.*[0-9].*[0-9])        Ensure string has one digit.
+    (?=.*[a-z].*[a-z].*[a-z]) Ensure string has one lowercase letters.
     .{8}                      Ensure string is of length 8.
 */
 
@@ -17,28 +17,28 @@ module.exports = (password) => {
         result.valid = false;
     } 
     else {
-        re = /.*[A-Z].*[A-Z]/;
+        re = /[A-Z]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has two uppercase letters.");
+            result.message = ("Ensure password has at least one uppercase letter.");
             result.valid = false;
         }
-        if(password.length < 12) {
-            result.message = ("Ensure password contains at least twelve characters!");
+        if(password.length < 8) {
+            result.message = ("Ensure password has at least eight characters!");
             result.valid = false;
         }
-        re = /.*[!@#$&*^-_+=:;`~,<>?].*[!@#$&*^-_+=:;`~,<>?]/;
+        re = /[!@#$&*^-_+=:;`~,<>?]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has two special case letter.");
+            result.message = ("Ensure password has at least one special character!");
             result.valid = false;
         }
-        re = /.*[0-9].*[0-9]/;
+        re = /[0-9]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has two digits!");
+            result.message = ("Ensure password has at lease one digit!");
             result.valid = false;
         }
-        re = /.*[a-z].*[a-z].*[a-z]/;
+        re = /[a-z]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has three lowercase letters!");
+            result.message = ("Ensure password has at least one lowercase letter!");
             result.valid = false;
         }
     } 
