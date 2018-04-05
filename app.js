@@ -113,6 +113,7 @@ app.get('/signup', function(req, res) {
 
 app.get('/success', function(req, res) {
   res.render('success', {
+    title: 'Success',
     user: req.user
   });
 });
