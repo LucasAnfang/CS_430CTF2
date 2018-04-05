@@ -76,6 +76,7 @@ var userSchema = new mongoose.Schema({
 
 userSchema.pre('save', function(next) {
   var user = this;
+  var SALT_FACTOR = 5;
 
   if (!user.isModified('password')) return next();
 
