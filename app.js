@@ -171,7 +171,10 @@ app.post('/signup', function(req, res) {
   // TODO: Check password criteria
   var result = passwordValidator(user.password);
   console.log(result);
-  if(!result.valid) {
+
+  var isUSCEmail = /@usc.edu\s*$/.test(user.email);
+
+  if(!result.valid || !isUSCEmail) {
     req.flash('error', result.message);
     return res.redirect('/signup');
   }
