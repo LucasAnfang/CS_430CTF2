@@ -4,6 +4,13 @@ extends layout
 block content
   form(method='POST')
     legend Reset Password
+    p Password should satisfy these rules:
+    ul#rules
+      <li>at least length of 8</li>
+      <li>contains at least one uppercase letter</li>
+      <li>contains at least one lowercase letter</li>
+      <li>contains at least one special character</li>
+      <li>contains at least one digit</li>
     .form-group
       label(for='password') New Password
       input.form-control(type='password', name='password', value='', placeholder='New password', autofocus=true)
