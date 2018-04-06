@@ -13,32 +13,54 @@ module.exports = (password) => {
         valid: true
     }
     if(password == "") {
-        result.message = ("Error: Password cannot be blank!");
+        result.message = ("Error: Password cannot be blank");
         result.valid = false;
-    } 
+    } else if (password.length < 8) {
+        result.message = ("Error: Password has less than eight characters");
+        result.valid = false;
+    }
     else {
+        messages = "";
+
         re = /[A-Z]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has at least one uppercase letter.");
-            result.valid = false;
+            if(messages == "") {
+                messages += "Password missing at least one uppercase letter";
+            } else {
+                messages = messages + ", " + " one uppercase letter";
+            }   
         }
-        if(password.length < 8) {
-            result.message = ("Ensure password has at least eight characters!");
-            result.valid = false;
-        }
-        re = /[!@#$&*^-_+=:;`~,<>?]/;
-        if(!re.test(password)) {
-            result.message = ("Ensure password has at least one special character!");
-            result.valid = false;
-        }
-        re = /[0-9]/;
-        if(!re.test(password)) {
-            result.message = ("Ensure password has at lease one digit!");
-            result.valid = false;
-        }
+
         re = /[a-z]/;
         if(!re.test(password)) {
-            result.message = ("Ensure password has at least one lowercase letter!");
+            if(messages == "") {
+                messages += "Password missing at least one lowercase letter";
+            } else {
+                messages = messages + ", " + " one lowercase letter";
+            }   
+        }
+
+        re = /[!@#$&*^-_+=:;`~,<>?]/;
+        if(!re.test(password)) {
+            if(messages == "") {
+                messages += "Password missing at least one special character";
+            } else {
+                messages = messages + ", " + " one special character";
+            }   
+        }
+
+        re = /[0-9]/;
+        if(!re.test(password)) {
+            if(messages == "") {
+                messages += "Password missing at lease one digit";
+            } else {
+                messages = messages + ", " + " one digit";
+            }   
+        }
+
+        if(!(messages == "")) {
+            messages+=".";
+            result.message = (messages);
             result.valid = false;
         }
     } 
