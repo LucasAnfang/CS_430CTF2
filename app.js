@@ -147,11 +147,6 @@ app.get('/forgot', function(req, res) {
   });
 });
 
-app.get('/reset', function(req, res) {
-  res.render('reset', {
-  });
-});
-
 app.post('/login', function(req, res, next) {
   passport.authenticate('local', function(err, user, info) {
     if (err) return next(err)
