@@ -126,7 +126,7 @@ app.get('/signup', function(req, res) {
 
 app.get('/success', function(req, res) {
   res.render('success', {
-    title: 'Success',
+    title: 'Sign Up Successful!',
     user: req.user
   });
 });
@@ -196,7 +196,7 @@ app.post('/signup', function(req, res) {
             req.flash('error', err.message);
             return res.redirect('/signup');
           }
-          else res.redirect('/');
+          else res.redirect('/success');
         });
       }
     });
