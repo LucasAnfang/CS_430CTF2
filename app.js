@@ -76,7 +76,8 @@ var userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
-  salt: { type: String }
+  salt: { type: String },
+  split: { type: Number}
 });
 
 userSchema.pre('save', function(next) {
@@ -87,18 +88,32 @@ userSchema.pre('save', function(next) {
 
   var uniqueSalt =" "; 
   var charset = "abcdefghijklmnopqrstuvwxyz0123456789";
+  var saltIndex =" ";
+  var tempPass = " ";
     
   for( var i=0; i < 5; i++ )
       uniqueSalt += charset.charAt(Math.floor(Math.random() * charset.length));
-      
-  var hash = crypto.createHash('md5').update(uniqueSalt + user.password).digest("hex");
+      saltIndex = Math.floor(Math.random() * (user.password.length-1));
+      for ( var j=0; j < ((user.password.length)+(uniqueSalt.length)); j++) 
+          if (j == saltIndex)
+              tempPass += uniqueSalt + user.password.charAt(j);
+          else tempPass += user.password.charAt(j); 
+  var hash = crypto.createHash('md5').update(tempPass).digest("hex");   
+  // var hash = crypto.createHash('md5').update(uniqueSalt + user.password).digest("hex");
   user.password = hash;
   user.salt = uniqueSalt;
+  user.split = saltIndex;
   next();
 });
 
 userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  var candidateHash = crypto.createHash('md5').update(this.salt + candidatePassword).digest("hex");
+  var temp = " ";
+
+  for( var i=0;  i < ((candidatePassword.length)+(this.salt.length)); i++)
+      if (i == this.split)
+          temp += this.salt + candidatePassword.charAt(i);
+      else temp += candidatePassword.charAt(i); 
+  var candidateHash = crypto.createHash('md5').update(temp).digest("hex");
   cb(null, (candidateHash === this.password));
 };
 
