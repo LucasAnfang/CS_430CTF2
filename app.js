@@ -125,6 +125,10 @@ app.get('/signup', function(req, res) {
 });
 
 app.get('/success', function(req, res) {
+  if (!req.user) {
+    req.flash('error', 'Please signup first.');
+    return res.redirect('/signup');
+  }
   res.render('success', {
     title: 'Sign Up Successful!',
     user: req.user
