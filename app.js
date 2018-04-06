@@ -332,6 +332,7 @@ app.post('/reset/:token', function(req, res) {
           req.flash('error', result.message);
           var route = '/reset/' + req.params.token;
           return res.redirect(route);
+        } else if(req.body.password != req.body.confirm) {
           req.flash('error', 'Ensure the Password matches the Confirm Password field');
           return res.redirect('/signup');
         }
