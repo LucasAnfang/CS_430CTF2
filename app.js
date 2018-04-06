@@ -136,6 +136,10 @@ app.get('/success', function(req, res) {
 });
 
 app.get('/failure', function(req, res) {
+  if (!req.headers.referer) {
+    req.flash('error', 'Please login first.');
+    return res.redirect('/login');
+  }
   res.render('failure', {
   });
 });
