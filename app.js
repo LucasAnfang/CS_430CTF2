@@ -141,11 +141,11 @@ app.get('/signup', function(req, res) {
 
 app.get('/success', function(req, res) {
   if (!req.user) {
-    req.flash('error', 'Please signup first.');
-    return res.redirect('/signup');
+    req.flash('error', 'Please login first.');
+    return res.redirect('/login');
   }
   res.render('success', {
-    title: 'Sign Up Successful!',
+    title: 'Login Successful!',
     user: req.user
   });
 });
@@ -178,7 +178,7 @@ app.post('/login', function(req, res, next) {
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
-      return res.redirect('/');
+      return res.redirect('/success');
     });
   })(req, res, next);
 });
@@ -221,10 +221,12 @@ app.post('/signup', function(req, res) {
         req.logIn(user, function(err) {
           if (err) {
             console.log(err);
-            req.flash('error', err.message);
+            req.flash('error', err.message);     
             return res.redirect('/signup');
+          } else {
+            req.flash('success', "Signed Up Successfully!");
+            res.redirect('/login');
           }
-          else res.redirect('/success');
         });
       }
     });
