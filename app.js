@@ -120,11 +120,21 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 var User = mongoose.model('User', userSchema);
 
 // Routes
+
 app.get('/', function(req, res){
-  res.render('index', {
-    title: 'HackMe',
-    user: req.user
-  });
+  if(req.user) {
+    usrname = req.user.email.split('@')[0];
+    res.render('index', {
+      title: ', '+usrname+'!',
+      user: req.user
+    });
+  } else {
+    res.render('index', {
+      title: '!',
+      user: req.user
+    });
+  }
+  
 });
 
 app.get('/login', function(req, res) {
@@ -144,8 +154,9 @@ app.get('/success', function(req, res) {
     req.flash('error', 'Please login first.');
     return res.redirect('/login');
   }
+  usrname = req.user.email.split('@')[0];
   res.render('success', {
-    title: 'Login Successful!',
+    title: ', '+usrname+'!',
     user: req.user
   });
 });
@@ -214,7 +225,11 @@ app.post('/signup', function(req, res) {
     user.save(function(err) {
       if (err) {
         console.log(err);
-        req.flash('error', err.message);
+        if(err.message.indexOf('E11000' > -1)) {
+          req.flash('error', 'User already exists!');
+        } else {
+          req.flash('error', err.message);
+        }
         return res.redirect('/signup');
       }
       else {
@@ -225,6 +240,7 @@ app.post('/signup', function(req, res) {
             return res.redirect('/signup');
           } else {
             req.flash('success', "Signed Up Successfully!");
+            req.logout();
             res.redirect('/login');
           }
         });
@@ -316,6 +332,8 @@ app.post('/reset/:token', function(req, res) {
           req.flash('error', result.message);
           var route = '/reset/' + req.params.token;
           return res.redirect(route);
+          req.flash('error', 'Ensure the Password matches the Confirm Password field');
+          return res.redirect('/signup');
         }
         else {
           user.save(function(err) {

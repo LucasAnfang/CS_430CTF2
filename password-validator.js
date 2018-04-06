@@ -25,7 +25,7 @@ module.exports = (password) => {
         re = /[A-Z]/;
         if(!re.test(password)) {
             if(messages == "") {
-                messages += "Password missing at least one uppercase letter";
+                messages += "Password missing one uppercase letter";
             } else {
                 messages = messages + ", " + " one uppercase letter";
             }   
@@ -34,7 +34,7 @@ module.exports = (password) => {
         re = /[a-z]/;
         if(!re.test(password)) {
             if(messages == "") {
-                messages += "Password missing at least one lowercase letter";
+                messages += "Password missing one lowercase letter";
             } else {
                 messages = messages + ", " + " one lowercase letter";
             }   
@@ -43,7 +43,7 @@ module.exports = (password) => {
         re = /[!@#$&*^-_+=:;`~,<>?]/;
         if(!re.test(password)) {
             if(messages == "") {
-                messages += "Password missing at least one special character";
+                messages += "Password missing one special character";
             } else {
                 messages = messages + ", " + " one special character";
             }   
@@ -52,7 +52,7 @@ module.exports = (password) => {
         re = /[0-9]/;
         if(!re.test(password)) {
             if(messages == "") {
-                messages += "Password missing at lease one digit";
+                messages += "Password missing one digit";
             } else {
                 messages = messages + ", " + " one digit";
             }   
