@@ -194,12 +194,13 @@ app.post('/signup', function(req, res) {
   var result = passwordValidator(user.password);
   console.log('passwordValidator result', result);
 
-  var isUSCEmail = /@usc.edu\s*$/.test(user.email);
+  var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  var isUSCEmail = /@usc.edu\s*$/.test(user.email) && re.test(user.email);
   console.log('isUSCEmail', isUSCEmail);
 
   if(!isUSCEmail) {
     console.log('error NOT USC EMAIL');
-    req.flash('error', 'Must use USC Email address ( @usc.edu )');
+    req.flash('error', 'Must use valid USC Email address ( @usc.edu )');
     return res.redirect('/signup');
   } else if(!result.valid) {
     console.log('error', result.message);
