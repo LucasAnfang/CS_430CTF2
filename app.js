@@ -206,6 +206,9 @@ app.post('/signup', function(req, res) {
     console.log('error NOT USC EMAIL');
     req.flash('error', 'Must use USC Email address ( @usc.edu )');
     return res.redirect('/signup');
+  } else if(!(req.body.password == req.body.confirm)) {
+    req.flash('error', 'Ensure the Password matches the Confirm Password field');
+    return res.redirect('/signup');
   }
   else {
     user.save(function(err) {

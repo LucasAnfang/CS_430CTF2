@@ -3,7 +3,7 @@ TODO add these:
     (?=.*[A-Z].*[A-Z])        Ensure string has one uppercase letter.
     (?=.*[!@#$&*])            Ensure string has one special character.
     (?=.*[0-9].*[0-9])        Ensure string has one digit.
-    (?=.*[a-z].*[a-z].*[a-z]) Ensure string has one lowercase letters.
+    (?=.*[a-z].*[a-z].*[a-z]) Ensure string has one lowercase letter.
     .{8}                      Ensure string is of length 8.
 */
 
