@@ -80,6 +80,20 @@ var userSchema = new mongoose.Schema({
   split: { type: Number}
 });
 
+
+var statSchema = new mongoose.Schema({
+  id: { type: Number},
+  login_attempt: { type: Number},
+  login_success: { type: Number},
+  login_failure: { type: Number},
+  reset:{ type: Number}
+});
+
+
+var Stat = mongoose.model('Stat', statSchema);
+
+
+
 userSchema.pre('save', function(next) {
   var user = this;
   var SALT_FACTOR = 5;
@@ -182,13 +196,31 @@ app.get('/forgot', function(req, res) {
 });
 
 app.post('/login', function(req, res, next) {
+  Stat.findOneAndUpdate({id: 1}, { $inc: { login_attempt: 1 }}, function(err, doc){
+    if(err){
+        console.log("Something wrong when updating data!");
+    }
+    console.log(doc);
+  });
   passport.authenticate('local', function(err, user, info) {
     if (err) return next(err)
     if (!user) {
+      Stat.findOneAndUpdate({id: 1}, { $inc: { login_failure: 1 }}, function(err, doc){
+        if(err){
+            console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      });
       return res.redirect('/failure')
     }
     req.logIn(user, function(err) {
       if (err) return next(err);
+      Stat.findOneAndUpdate({id: 1}, { $inc: { login_success: 1 }}, function(err, doc){
+        if(err){
+            console.log("Something wrong when updating data!");
+        }
+        console.log(doc);
+      });
       return res.redirect('/success');
     });
   })(req, res, next);
@@ -337,6 +369,12 @@ app.post('/reset/:token', function(req, res) {
           return res.redirect('/signup');
         }
         else {
+            Stat.findOneAndUpdate({id: 1}, { $inc: { reset: 1 }}, function(err, doc){
+              if(err){
+                  console.log("Something wrong when updating data!");
+              }
+              console.log(doc);
+            });
           user.save(function(err) {
             req.logIn(user, function(err) {
               done(err, user);
