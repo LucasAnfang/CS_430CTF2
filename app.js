@@ -366,7 +366,8 @@ app.post('/reset/:token', function(req, res) {
           return res.redirect(route);
         } else if(req.body.password != req.body.confirm) {
           req.flash('error', 'Ensure the Password matches the Confirm Password field');
-          return res.redirect('/signup');
+          var route = '/reset/' + req.params.token;
+          return res.redirect(route);
         }
         else {
             Stat.findOneAndUpdate({id: 1}, { $inc: { reset: 1 }}, function(err, doc){
