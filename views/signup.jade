@@ -20,3 +20,7 @@ block content
       label(for='confirm') Confirm Password
       input.form-control(type='password', name='confirm')
     button.btn.btn-primary(type='submit') Signup
+    p <br />
+    p Passwords are stored as an MD5 hash of the password with unique salt. 
+    p Salt is inserted in a random location of plaintext password.
+    p Salt and location are stored in their separate columns in the database.
